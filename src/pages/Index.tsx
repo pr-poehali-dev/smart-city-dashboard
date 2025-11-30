@@ -27,7 +27,9 @@ interface TrafficLight {
 
 const Index = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [selectedTab, setSelectedTab] = useState<"security" | "transport">("security");
+  const [selectedTab, setSelectedTab] = useState<"security" | "transport" | "privacy">("security");
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [userRole, setUserRole] = useState<"admin" | "operator" | "viewer">("admin");
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -113,7 +115,7 @@ const Index = () => {
               })} · {currentTime.toLocaleTimeString("ru-RU")}
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
             <button
               onClick={() => setSelectedTab("security")}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
@@ -136,6 +138,21 @@ const Index = () => {
               <Icon name="Car" className="inline mr-2" size={18} />
               Транспорт
             </button>
+            <button
+              onClick={() => setSelectedTab("privacy")}
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                selectedTab === "privacy"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-card text-card-foreground hover:bg-accent"
+              }`}
+            >
+              <Icon name="Lock" className="inline mr-2" size={18} />
+              Приватность
+            </button>
+            <div className="ml-4 flex items-center gap-2 px-4 py-2 bg-card rounded-lg border border-border">
+              <Icon name="User" size={18} className="text-primary" />
+              <span className="text-sm font-medium">{userRole === "admin" ? "Администратор" : userRole === "operator" ? "Оператор" : "Наблюдатель"}</span>
+            </div>
           </div>
         </div>
 
